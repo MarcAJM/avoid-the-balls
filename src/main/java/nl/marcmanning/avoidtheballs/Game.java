@@ -17,7 +17,7 @@ public class Game {
     public Game(Pane pane) {
         this.running = false;
         this.entitySpace = new EntitySpace();
-        this.renderer = new Renderer(entitySpace, pane);
+        this.renderer = new Renderer(entitySpace);
         this.systems = new HashSet<>();
         init();
     }
