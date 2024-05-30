@@ -7,10 +7,10 @@ import nl.marcmanning.CollisionUtils;
 import nl.marcmanning.avoidtheballs.EntitySpace;
 import nl.marcmanning.avoidtheballs.components.Hitbox;
 import nl.marcmanning.avoidtheballs.components.Movement;
-import nl.marcmanning.avoidtheballs.utils.Vector2D;
+import org.apache.commons.math4.legacy.linear.Array2DRowRealMatrix;
+import org.apache.commons.math4.legacy.linear.RealVector;
 
 import java.util.*;
-import java.util.function.ToDoubleFunction;
 
 public class CollisionDetector extends System {
 
@@ -21,7 +21,7 @@ public class CollisionDetector extends System {
     @Override
     public void update() {
         List<Pair<Movement, Hitbox>> targets = entitySpace.getComponentPairsOfTypes(Movement.class, Hitbox.class);
-        List<List<Pair<Movement, Hitbox>>> borderCollisions = getBorderCollisions(targets, Screen.getPrimary().getBounds());
+        List<List<Pair<Movement, Hitbox>>> borderCollisions = getBorderCollisions(targets, Screen.getPrimary().getVisualBounds());
         handleBorderCollisions(borderCollisions);
         Set<List<Pair<Movement, Hitbox>>> collisions = getCollisions(targets);
         handleCollisions(collisions);
@@ -29,40 +29,43 @@ public class CollisionDetector extends System {
 
     private void handleBorderCollisions(List<List<Pair<Movement, Hitbox>>> collisions) {
         for (Pair<Movement, Hitbox> collision : collisions.getFirst()) {
-            collision.getKey().getVelocity().invertY();
+            RealVector vel = collision.getKey().getVelocity();
+            vel.setEntry(1, vel.getEntry(1) * -1.0f);
+            collision.getKey().setVelocity(vel);
         }
         for (Pair<Movement, Hitbox> collision : collisions.getLast()) {
-            collision.getKey().getVelocity().invertX();
+            RealVector vel = collision.getKey().getVelocity();
+            vel.setEntry(0, vel.getEntry(0) * -1.0f);
+            collision.getKey().setVelocity(vel);
         }
     }
 
     private void handleCollisions(Set<List<Pair<Movement, Hitbox>>> collisions) {
         for (List<Pair<Movement, Hitbox>> collision : collisions) {
-            handleCollision(collision.getFirst().getKey().getVelocity(), collision.getFirst().getValue().getRadius(),
-                    collision.getLast().getKey().getVelocity(), collision.getLast().getValue().getRadius());
+            handleCollision(collision.getFirst().getKey(), collision.getFirst().getValue().getRadius(),
+                    collision.getLast().getKey(), collision.getLast().getValue().getRadius());
         }
     }
 
-    private void handleCollision(Vector2D vel1, float radius1, Vector2D vel2, float radius2) {
-        Vector2D newVel1 = computeVelocityAfterCollision(vel1, radius1, vel2, radius2);
-        Vector2D newVel2 = computeVelocityAfterCollision(vel2, radius2, vel1, radius1);
-        vel1.setX(newVel1.getX());
-        vel1.setY(newVel1.getY());
-        vel2.setX(newVel2.getX());
-        vel2.setY(newVel2.getY());
+    private void handleCollision(Movement mov1, float rad1, Movement mov2, float rad2) {
+        double[][] rotation = {{0,-1},{1,0}};
+        RealVector normal = mov2.getPosition().subtract(mov1.getPosition()).unitVector();
+        RealVector tangent = new Array2DRowRealMatrix(rotation).operate(normal).unitVector();
+        float v1n = (float) normal.dotProduct(mov1.getVelocity());
+        float v1tf = (float) tangent.dotProduct(mov1.getVelocity());
+        float v2n = (float) normal.dotProduct(mov2.getVelocity());
+        float v2tf = (float) tangent.dotProduct(mov2.getVelocity());
+        float v1nf = computeFinalNormalVelocity(v1n, rad1, v2n, rad2);
+        float v2nf = computeFinalNormalVelocity(v2n, rad2, v1n, rad1);
+        mov1.setVelocity(normal.mapMultiply(v1nf).add(tangent.mapMultiply(v1tf)));
+        mov2.setVelocity(normal.mapMultiply(v2nf).add(tangent.mapMultiply(v2tf)));
     }
 
-    private Vector2D computeVelocityAfterCollision(Vector2D targetVel, float targetRad, Vector2D collidingVel, float collisionRad) {
-        float velX = computeVelocityAfterCollision(targetVel.getX(), targetRad, collidingVel.getX(), collisionRad);
-        float velY = computeVelocityAfterCollision(targetVel.getY(), targetRad, collidingVel.getY(), collisionRad);
-        return new Vector2D(velX, velY);
-    }
-
-    private float computeVelocityAfterCollision(float v1, float r1, float v2, float r2) {
+    private float computeFinalNormalVelocity(float v1n, float r1, float v2n, float r2) {
         if (r1 == 0 || r2 == 0) {
-            return 0;
+            return v1n;
         } else {
-            return ((r1 * r1 - r2 * r2) * v1 + 2 * r2 * r2 * v2) / (r1 * r1 + r2 * r2);
+            return ((r1 * r1 - r2 * r2) * v1n + 2 * r2 * r2 * v2n) / (r1 * r1 + r2 * r2);
         }
     }
 
@@ -77,19 +80,18 @@ public class CollisionDetector extends System {
 
     private void recordBorderCollisions(List<Pair<Movement, Hitbox>> horizontal, List<Pair<Movement, Hitbox>> vertical,
                                         Pair<Movement, Hitbox> target, Rectangle2D bounds) {
-        float x = target.getKey().getPosition().getX();
-        float y = target.getKey().getPosition().getY();
+        RealVector pos = target.getKey().getPosition();
         float radius = target.getValue().getRadius();
-        if (y + radius <= bounds.getHeight() || y - radius >= 0) {
+        if (pos.getEntry(1) + radius >= bounds.getHeight() || pos.getEntry(1) - radius <= 0) {
             horizontal.add(target);
         }
-        if (x + radius <= bounds.getWidth() || x - radius >= 0) {
+        if (pos.getEntry(0) + radius >= bounds.getWidth() || pos.getEntry(0) - radius <= 0) {
             vertical.add(target);
         }
     }
 
     private Set<List<Pair<Movement, Hitbox>>> getCollisions(List<Pair<Movement, Hitbox>> targets) {
-        return CollisionUtils.getCircleCollisions(targets, p -> p.getKey().getPosition().getX(),
-                p -> p.getKey().getPosition().getY(), p -> p.getValue().getRadius());
+        return CollisionUtils.getCircleCollisions(targets, p -> p.getKey().getPosition().getEntry(0),
+                p -> p.getKey().getPosition().getEntry(1), p -> p.getValue().getRadius());
     }
 }

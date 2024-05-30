@@ -19,10 +19,10 @@ public class Game {
         this.entitySpace = new EntitySpace();
         this.renderer = new Renderer(entitySpace);
         this.systems = new HashSet<>();
-        init();
+        init(pane);
     }
 
-    private void init() {
+    private void init(Pane pane) {
         systems.add(new MovementSystem(entitySpace));
         systems.add(new CollisionDetector(entitySpace));
     }
@@ -43,6 +43,11 @@ public class Game {
         running = true;
         while (running) {
             loops = 0;
+            //TODO ---------
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException _) {}
+            // TODO ---------
             while (getTimeMillis() > nextGameTick && loops < Constants.MAX_FRAME_SKIPS) {
                 update();
                 nextGameTick += Constants.TICK_DURATION_MILLIS;

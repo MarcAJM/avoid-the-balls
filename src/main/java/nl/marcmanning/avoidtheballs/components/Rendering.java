@@ -4,17 +4,20 @@ import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import org.apache.commons.math4.legacy.linear.RealVector;
 
 public class Rendering implements Component {
     private final Circle circle;
     private Color color;
     private float radius;
 
-    public Rendering(Color color, float radius, Pane pane) {
-        this.color = color;
+    public Rendering(float x, float y, float radius, Pane pane) {
+        this.color = Color.BLACK;
         this.radius = radius;
         this.circle = new Circle(radius);
         this.circle.setFill(color);
+        this.circle.setLayoutX(x);
+        this.circle.setLayoutY(y);
         pane.getChildren().add(circle);
     }
 
@@ -36,10 +39,10 @@ public class Rendering implements Component {
         });
     }
 
-    public void setPosition(float x, float y) {
+    public void setPosition(RealVector position) {
         Platform.runLater(() -> {
-            this.circle.setLayoutX(x);
-            this.circle.setLayoutY(y);
+            this.circle.setLayoutX(position.getEntry(0));
+            this.circle.setLayoutY(position.getEntry(1));
         });
     }
 }

@@ -1,26 +1,35 @@
 package nl.marcmanning.avoidtheballs.components;
 
-import nl.marcmanning.avoidtheballs.utils.Vector2D;
+import org.apache.commons.math4.legacy.linear.ArrayRealVector;
+import org.apache.commons.math4.legacy.linear.RealVector;
 
 public class Movement implements Component {
-    private final Vector2D position;
-    private final Vector2D velocity;
+    private double[] position;
+    private double[] velocity;
 
     public Movement(float x, float y) {
-        this.position = new Vector2D(x, y);
-        this.velocity = new Vector2D(0, 0);
+        this.position = new double[]{x, y};
+        this.velocity = new double[]{0.0, 0.0};
     }
 
     public Movement(float x, float y, float velX, float velY) {
-        this.position = new Vector2D(x, y);
-        this.velocity = new Vector2D(velX, velY);
+        this.position = new double[]{x, y};
+        this.velocity = new double[]{velX, velY};
     }
 
-    public Vector2D getPosition() {
-        return position;
+    public RealVector getPosition() {
+        return new ArrayRealVector(position);
     }
 
-    public Vector2D getVelocity() {
-        return velocity;
+    public void setPosition(RealVector position) {
+        this.position = position.toArray();
+    }
+
+    public RealVector getVelocity() {
+        return new ArrayRealVector(velocity);
+    }
+
+    public void setVelocity(RealVector velocity) {
+        this.velocity = velocity.toArray();
     }
 }
