@@ -1,13 +1,12 @@
 package nl.marcmanning.avoidtheballs;
 
 public final class Constants {
-    public static final float STANDARD_APP_WIDTH = 640.0f;
-    public static final float STANDARD_APP_HEIGHT = 480.0f;
+    public static final double STANDARD_APP_WIDTH = 640.0;
+    public static final double STANDARD_APP_HEIGHT = 480.0;
+
     public static final int FPS = 100;
     public static final int TICK_DURATION_MILLIS = 1000 / FPS;
-    public static final float TICK_DURATION = 1.0f / FPS;
-    public static final int MAX_FRAME_SKIPS = 5;
-    public static final float MAX_SPEED = 500;
+    public static final double TICK_DURATION = 1.0 / FPS;
 
     private Constants() {}
 }

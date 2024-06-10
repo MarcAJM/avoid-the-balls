@@ -1,17 +1,17 @@
 package nl.marcmanning.avoidtheballs.components;
 
 public class Hitbox implements Component {
-    private float radius;
+    private double radius;
 
-    public Hitbox(float radius) {
+    public Hitbox(double radius) {
         this.radius = radius;
     }
 
-    public float getRadius() {
+    public double getRadius() {
         return radius;
     }
 
-    public void setRadius(float radius) {
+    public void setRadius(double radius) {
         this.radius = radius;
     }
 }

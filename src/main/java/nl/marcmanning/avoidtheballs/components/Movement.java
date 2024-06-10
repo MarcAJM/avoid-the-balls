@@ -7,14 +7,19 @@ public class Movement implements Component {
     private double[] position;
     private double[] velocity;
 
-    public Movement(float x, float y) {
+    public Movement(double x, double y) {
         this.position = new double[]{x, y};
         this.velocity = new double[]{0.0, 0.0};
     }
 
-    public Movement(float x, float y, float velX, float velY) {
+    public Movement(double x, double y, double velX, double velY) {
         this.position = new double[]{x, y};
         this.velocity = new double[]{velX, velY};
+    }
+
+    public Movement(RealVector pos, RealVector vel) {
+        this.position = pos.toArray();
+        this.velocity = vel.toArray();
     }
 
     public RealVector getPosition() {

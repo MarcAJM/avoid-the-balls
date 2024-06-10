@@ -7,18 +7,21 @@ import javafx.scene.shape.Circle;
 import org.apache.commons.math4.legacy.linear.RealVector;
 
 public class Rendering implements Component {
-    private final Circle circle;
+    private Circle circle;
     private Color color;
-    private float radius;
+    private double radius;
+    private boolean isInPane;
 
-    public Rendering(float x, float y, float radius, Pane pane) {
-        this.color = Color.BLACK;
+    public Rendering(double x, double y, double radius, Color color) {
+        this.color = color;
         this.radius = radius;
-        this.circle = new Circle(radius);
-        this.circle.setFill(color);
-        this.circle.setLayoutX(x);
-        this.circle.setLayoutY(y);
-        pane.getChildren().add(circle);
+        this.isInPane = false;
+        Platform.runLater(() -> {
+            this.circle = new Circle(radius);
+            this.circle.setFill(color);
+            this.circle.setLayoutX(x);
+            this.circle.setLayoutY(y);
+        });
     }
 
     public Color getColor() { return color; }
@@ -26,17 +29,17 @@ public class Rendering implements Component {
     public void setColor(Color color) {
         Platform.runLater(() -> {
             this.circle.setFill(color);
-            this.color = color;
         });
+        this.color = color;
     }
 
-    public float getRadius() { return radius; }
+    public double getRadius() { return radius; }
 
-    public void setRadius(float radius) {
+    public void setRadius(double radius) {
         Platform.runLater(() -> {
             this.circle.setRadius(radius);
-            this.radius = radius;
         });
+        this.radius = radius;
     }
 
     public void setPosition(RealVector position) {
@@ -44,5 +47,14 @@ public class Rendering implements Component {
             this.circle.setLayoutX(position.getEntry(0));
             this.circle.setLayoutY(position.getEntry(1));
         });
+    }
+
+    public void addToPane(Pane pane) {
+        if (!isInPane) {
+            Platform.runLater(() -> {
+                pane.getChildren().add(circle);
+            });
+            isInPane = true;
+        }
     }
 }
