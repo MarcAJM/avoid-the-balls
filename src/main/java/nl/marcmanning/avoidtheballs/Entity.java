@@ -3,7 +3,9 @@ package nl.marcmanning.avoidtheballs;
 import nl.marcmanning.avoidtheballs.components.Component;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Entity {
     private final int id;
@@ -27,5 +29,9 @@ public class Entity {
 
     public <T extends Component> T getComponent(Class<T> componentClass) {
         return componentClass.cast(components.get(componentClass));
+    }
+
+    public Set<Component> getComponents() {
+        return new HashSet<>(components.values());
     }
 }

@@ -27,6 +27,7 @@ public class App extends Application implements Listener {
     public void start(Stage stage) {
         BorderPane prePane = createPrePane();
         postPane = new BorderPane();
+        postPane.setStyle("-fx-background-color: black;");
         gamePane = new Pane();
         game = new Game(gamePane, this);
         scene = createFittingScene(prePane, Constants.STANDARD_APP_WIDTH, Constants.STANDARD_APP_HEIGHT);
@@ -74,6 +75,7 @@ public class App extends Application implements Listener {
 
     private BorderPane createPrePane() {
         BorderPane prePane = new BorderPane();
+        prePane.setStyle("-fx-background-color: black;");
         Label label = new Label(Constants.PRE_GAME_TEXT);
         applyStyling(label);
         prePane.setCenter(label);
@@ -96,7 +98,7 @@ public class App extends Application implements Listener {
     }
 
     private void applyStyling(Label label) {
-        label.setStyle("-fx-font-size: 32px; -fx-font-family: 'Verdana'; -fx-text-fill: black;");
+        label.setStyle("-fx-font-size: 32px; -fx-font-family: 'Verdana'; -fx-text-fill: white;");
         label.setTextAlignment(TextAlignment.CENTER);
     }
 

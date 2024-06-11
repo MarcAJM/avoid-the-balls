@@ -10,6 +10,7 @@ import nl.marcmanning.avoidtheballs.components.Movement;
 import org.apache.commons.math4.legacy.linear.ArrayRealVector;
 import org.apache.commons.math4.legacy.linear.RealVector;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +20,8 @@ public class InputHandler extends System implements EventHandler<MouseEvent> {
     public InputHandler(EntitySpace entitySpace, Pane pane) {
         super(entitySpace);
         pane.setOnMouseMoved(this);
+        Point point = MouseInfo.getPointerInfo().getLocation();
+        position = new ArrayRealVector(new double[]{point.getX(), point.getY()});
     }
 
     @Override

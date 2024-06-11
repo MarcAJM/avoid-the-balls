@@ -66,16 +66,21 @@ public class CollisionSystem extends System {
     }
 
     public void handleBorderCollisions(Pair<Set<Entity>,Set<Entity>> collisions) {
-        handleBorderCollisions(collisions.getKey(), 1);
-        handleBorderCollisions(collisions.getValue(), 0);
+        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+        handleBorderCollisions(collisions.getKey(), 1, bounds.getHeight());
+        handleBorderCollisions(collisions.getValue(), 0, bounds.getWidth());
     }
 
-    private void handleBorderCollisions(Set<Entity> collisions, int entry) {
+    private void handleBorderCollisions(Set<Entity> collisions, int entry, double bound) {
         for (Entity entity : collisions) {
             Movement movement = entity.getComponent(Movement.class);
+            RealVector pos = movement.getPosition();
             RealVector vel = movement.getVelocity();
-            vel.setEntry(entry, vel.getEntry(entry) * -1.0);
-            movement.setVelocity(vel);
+            double radius = entity.getComponent(Hitbox.class).getRadius();
+            if ((pos.getEntry(entry) - radius <= 0 && vel.getEntry(entry) < 0) || (pos.getEntry(entry) + radius >= bound && vel.getEntry(entry) > 0)) {
+                vel.setEntry(entry, vel.getEntry(entry) * -1.0);
+                movement.setVelocity(vel);
+            }
         }
     }
 
@@ -87,7 +92,7 @@ public class CollisionSystem extends System {
             if (first.hasComponent(Controller.class) || last.hasComponent(Controller.class)) {
                 Platform.runLater(() -> {
                     game.stop();
-                    game.getListener().update(Game.computeScore(game.getStartingTime()));
+                    game.getListener().update(game.getCurrentScore());
                 });
             } else {
                 handleCollision(first.getComponent(Movement.class), first.getComponent(Hitbox.class).getRadius(),

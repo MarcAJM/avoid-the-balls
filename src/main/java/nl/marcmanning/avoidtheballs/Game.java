@@ -1,11 +1,9 @@
 package nl.marcmanning.avoidtheballs;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import nl.marcmanning.avoidtheballs.components.Controller;
 import nl.marcmanning.avoidtheballs.components.Hitbox;
 import nl.marcmanning.avoidtheballs.components.Movement;
-import nl.marcmanning.avoidtheballs.components.Rendering;
 import nl.marcmanning.avoidtheballs.systems.*;
 import nl.marcmanning.avoidtheballs.systems.System;
 
@@ -31,17 +29,12 @@ public class Game {
     }
 
     private void init(Pane pane) {
+        pane.setStyle("-fx-background-color: black;");
         systems.add(new MovementSystem(entitySpace));
         systems.add(new CollisionSystem(entitySpace, this));
         systems.add(new InputHandler(entitySpace, pane));
-        Movement movement1 = new Movement(0, 0);
-        Hitbox hitbox1 = new Hitbox(1);
-        Controller controller1 = new Controller();
-        Movement movement2 = new Movement(100, 100, 100, 100);
-        Hitbox hitbox2 = new Hitbox(50);
-        Rendering rendering2 = new Rendering(100, 100, 50, Color.BLACK);
-        entitySpace.addEntity(movement1, hitbox1, controller1);
-        entitySpace.addEntity(movement2, hitbox2, rendering2);
+        systems.add(new Spawner(entitySpace, startingTime));
+        entitySpace.add(0, new Movement(0, 0), new Hitbox(1), new Controller());
     }
 
     public void start() {
@@ -83,11 +76,7 @@ public class Game {
         return listener;
     }
 
-    public long getStartingTime() {
-        return startingTime;
-    }
-
-    public static long computeScore(long startingTime) {
+    public long getCurrentScore() {
         return (getTimeMillis() - startingTime) / 100;
     }
 

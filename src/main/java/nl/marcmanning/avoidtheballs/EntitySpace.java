@@ -6,11 +6,9 @@ import java.util.*;
 
 public class EntitySpace {
     private final Map<Class<? extends Component>,Set<Entity>> components;
-    private int idPointer;
 
     public EntitySpace() {
         components = new HashMap<>();
-        idPointer = 0;
     }
 
     public Set<Entity> getEntitiesContaining(List<Class<? extends Component>> componentClasses) {
@@ -23,12 +21,15 @@ public class EntitySpace {
         return entities;
     }
 
-    public void addEntity(Component... components) {
-        Entity entity = new Entity(idPointer, components);
-        for (Component component : components) {
+    public void add(int id, Component... components) {
+        Entity entity = new Entity(id, components);
+        add(entity);
+    }
+
+    public void add(Entity entity) {
+        for (Component component : entity.getComponents()) {
             this.components.putIfAbsent(component.getClass(), new HashSet<>());
             this.components.get(component.getClass()).add(entity);
         }
-        idPointer++;
     }
 }
