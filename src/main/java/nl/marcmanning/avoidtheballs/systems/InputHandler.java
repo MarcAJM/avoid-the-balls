@@ -3,7 +3,7 @@ package nl.marcmanning.avoidtheballs.systems;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import nl.marcmanning.avoidtheballs.Entity;
+import nl.marcmanning.avoidtheballs.extra.Entity;
 import nl.marcmanning.avoidtheballs.EntitySpace;
 import nl.marcmanning.avoidtheballs.components.Controller;
 import nl.marcmanning.avoidtheballs.components.Movement;

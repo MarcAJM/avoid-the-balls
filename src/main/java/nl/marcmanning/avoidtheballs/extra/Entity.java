@@ -1,4 +1,4 @@
-package nl.marcmanning.avoidtheballs;
+package nl.marcmanning.avoidtheballs.extra;
 
 import nl.marcmanning.avoidtheballs.components.Component;
 

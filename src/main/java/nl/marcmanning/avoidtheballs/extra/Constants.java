@@ -1,4 +1,4 @@
-package nl.marcmanning.avoidtheballs;
+package nl.marcmanning.avoidtheballs.extra;
 
 import javafx.scene.paint.Color;
 

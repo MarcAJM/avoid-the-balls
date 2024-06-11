@@ -1,6 +1,7 @@
 package nl.marcmanning.avoidtheballs;
 
 import nl.marcmanning.avoidtheballs.components.Component;
+import nl.marcmanning.avoidtheballs.extra.Entity;
 
 import java.util.*;
 

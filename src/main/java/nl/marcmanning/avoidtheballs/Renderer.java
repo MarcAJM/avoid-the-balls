@@ -3,6 +3,8 @@ package nl.marcmanning.avoidtheballs;
 import javafx.scene.layout.Pane;
 import nl.marcmanning.avoidtheballs.components.Movement;
 import nl.marcmanning.avoidtheballs.components.Rendering;
+import nl.marcmanning.avoidtheballs.extra.Constants;
+import nl.marcmanning.avoidtheballs.extra.Entity;
 import org.apache.commons.math4.legacy.linear.RealVector;
 
 import java.util.List;

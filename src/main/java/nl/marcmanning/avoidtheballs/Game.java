@@ -4,6 +4,8 @@ import javafx.scene.layout.Pane;
 import nl.marcmanning.avoidtheballs.components.Controller;
 import nl.marcmanning.avoidtheballs.components.Hitbox;
 import nl.marcmanning.avoidtheballs.components.Movement;
+import nl.marcmanning.avoidtheballs.extra.Constants;
+import nl.marcmanning.avoidtheballs.extra.Listener;
 import nl.marcmanning.avoidtheballs.systems.*;
 import nl.marcmanning.avoidtheballs.systems.System;
 
@@ -16,7 +18,8 @@ public class Game {
     private final Renderer renderer;
     private final Set<System> systems;
     private final Listener listener;
-    private final long startingTime;
+    private final Pane pane;
+    private long startingTime;
 
     public Game(Pane pane, Listener listener) {
         this.running = false;
@@ -24,22 +27,21 @@ public class Game {
         this.renderer = new Renderer(entitySpace, pane);
         this.systems = new HashSet<>();
         this.listener = listener;
-        this.startingTime = getTimeMillis();
-        init(pane);
+        this.pane = pane;
     }
 
     private void init(Pane pane) {
+        startingTime = getTimeMillis();
         pane.setStyle("-fx-background-color: black;");
+        systems.add(new Spawner(entitySpace, startingTime));
         systems.add(new MovementSystem(entitySpace));
         systems.add(new CollisionSystem(entitySpace, this));
         systems.add(new InputHandler(entitySpace, pane));
-        systems.add(new Spawner(entitySpace, startingTime));
         entitySpace.add(0, new Movement(0, 0), new Hitbox(1), new Controller());
     }
 
     public void start() {
         if (!running) {
-            running = true;
             new Thread(this::run).start();
         }
     }
@@ -51,6 +53,8 @@ public class Game {
     private void run() {
         double previous = getTimeMillis();
         double lag = 0.0;
+        running = true;
+        init(pane);
         while (running) {
             double current = getTimeMillis();
             double elapsed = current - previous;

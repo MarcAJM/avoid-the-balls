@@ -1,7 +1,7 @@
 package nl.marcmanning.avoidtheballs.systems;
 
-import nl.marcmanning.avoidtheballs.Constants;
-import nl.marcmanning.avoidtheballs.Entity;
+import nl.marcmanning.avoidtheballs.extra.Constants;
+import nl.marcmanning.avoidtheballs.extra.Entity;
 import nl.marcmanning.avoidtheballs.EntitySpace;
 import nl.marcmanning.avoidtheballs.components.Movement;
 import org.apache.commons.math4.legacy.linear.RealVector;

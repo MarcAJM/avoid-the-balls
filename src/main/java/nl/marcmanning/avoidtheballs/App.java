@@ -2,18 +2,17 @@ package nl.marcmanning.avoidtheballs;
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import nl.marcmanning.avoidtheballs.extra.Constants;
+import nl.marcmanning.avoidtheballs.extra.Listener;
 
 public class App extends Application implements Listener {
     private Game game;

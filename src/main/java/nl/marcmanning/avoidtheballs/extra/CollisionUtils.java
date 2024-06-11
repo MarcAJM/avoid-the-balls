@@ -1,4 +1,4 @@
-package nl.marcmanning.avoidtheballs;
+package nl.marcmanning.avoidtheballs.extra;
 
 import org.apache.commons.math4.legacy.linear.RealVector;
 
