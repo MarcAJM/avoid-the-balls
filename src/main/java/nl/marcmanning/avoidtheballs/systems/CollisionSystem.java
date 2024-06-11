@@ -6,6 +6,7 @@ import javafx.stage.Screen;
 import javafx.util.Pair;
 import nl.marcmanning.CollisionUtils;
 import nl.marcmanning.avoidtheballs.Game;
+import nl.marcmanning.avoidtheballs.Listener;
 import nl.marcmanning.avoidtheballs.components.Controller;
 import nl.marcmanning.avoidtheballs.Entity;
 import nl.marcmanning.avoidtheballs.EntitySpace;
@@ -84,7 +85,10 @@ public class CollisionSystem extends System {
             Entity first = iterator.next();
             Entity last = iterator.next();
             if (first.hasComponent(Controller.class) || last.hasComponent(Controller.class)) {
-                Platform.runLater(game::terminate);
+                Platform.runLater(() -> {
+                    game.stop();
+                    game.getListener().update(Game.computeScore(game.getStartingTime()));
+                });
             } else {
                 handleCollision(first.getComponent(Movement.class), first.getComponent(Hitbox.class).getRadius(),
                         last.getComponent(Movement.class), last.getComponent(Hitbox.class).getRadius());

@@ -1,6 +1,5 @@
 package nl.marcmanning.avoidtheballs;
 
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import nl.marcmanning.avoidtheballs.components.Controller;
@@ -18,12 +17,16 @@ public class Game {
     private final EntitySpace entitySpace;
     private final Renderer renderer;
     private final Set<System> systems;
+    private final Listener listener;
+    private final long startingTime;
 
-    public Game(Pane pane) {
+    public Game(Pane pane, Listener listener) {
         this.running = false;
         this.entitySpace = new EntitySpace();
         this.renderer = new Renderer(entitySpace, pane);
         this.systems = new HashSet<>();
+        this.listener = listener;
+        this.startingTime = getTimeMillis();
         init(pane);
     }
 
@@ -48,7 +51,7 @@ public class Game {
         }
     }
 
-    public void terminate() {
+    public void stop() {
         running = false;
     }
 
@@ -76,10 +79,16 @@ public class Game {
         }
     }
 
-    private void applyLabelStyling(Label label, Pane pane) {
-        label.setStyle("-fx-font-size: 32px; -fx-font-family: 'Verdana'; -fx-text-fill: black;");
-        label.layoutXProperty().bind(pane.widthProperty().subtract(label.widthProperty()).divide(2));
-        label.layoutYProperty().bind(pane.heightProperty().subtract(label.heightProperty()).divide(2));
+    public Listener getListener() {
+        return listener;
+    }
+
+    public long getStartingTime() {
+        return startingTime;
+    }
+
+    public static long computeScore(long startingTime) {
+        return (getTimeMillis() - startingTime) / 100;
     }
 
     public static long getTimeMillis() {
