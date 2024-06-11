@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="avoid-the-balls">
+    <output-path>$PROJECT_DIR$/out/artifacts/avoid_the_balls</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="nl.marcmanning.avoidtheballs.App" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="Avoid The Balls" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="avoid_the_balls.jar">
+        <element id="module-output" name="avoid-the-balls" />
+      </element>
+    </root>
+  </artifact>
+</component>
