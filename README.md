@@ -1,6 +1,6 @@
 # Avoid The Balls
 
-This is my first game ever I actually put quite amount of effort in. The idea is simple, try to avoid the balls for as long as possible!
+This is my first game ever I actually put quite some effort in. The idea is simple, try to avoid the balls for as long as possible!
 
 ## Technical Overview
 I coded this game in Java using JavaFX. Furthermore, I used a well-known architecture called Entity Component System (ECS) which is often used for games. I had some trouble implementing this architecture because there are not really concrete examples available online. In the end I managed to make it work fortunately. <br>
