@@ -14,29 +14,26 @@ import java.awt.*;
 import java.util.List;
 import java.util.Set;
 
-public class InputHandler extends System implements EventHandler<MouseEvent> {
-    private volatile RealVector position;
+public class InputHandler extends System {
 
     public InputHandler(EntitySpace entitySpace, Pane pane) {
         super(entitySpace);
-        pane.setOnMouseMoved(this);
-        Point point = MouseInfo.getPointerInfo().getLocation();
-        position = new ArrayRealVector(new double[]{point.getX(), point.getY()});
     }
 
     @Override
     public void update() {
         Set<Entity> entities = entitySpace.getEntitiesContaining(List.of(Controller.class));
+        RealVector position = getMousePosition();
         for (Entity entity : entities) {
-            if (entity.hasComponent(Movement.class) && position != null) {
+            if (entity.hasComponent(Movement.class)) {
                 Movement movement = entity.getComponent(Movement.class);
                 movement.setPosition(position);
             }
         }
     }
 
-    @Override
-    public void handle(MouseEvent event) {
-        position = new ArrayRealVector(new double[]{event.getX(), event.getY()});
+    private RealVector getMousePosition() {
+        Point point = MouseInfo.getPointerInfo().getLocation();
+        return new ArrayRealVector(new double[]{point.getX(), point.getY()});
     }
 }
