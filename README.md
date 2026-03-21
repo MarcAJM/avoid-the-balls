@@ -5,5 +5,6 @@ This is my first game ever I actually put quite some effort in. The idea is simp
 ![Demo](demo.gif)
 
 ## Technical Overview
-I coded this game in Java using JavaFX. Furthermore, I used a well-known architecture called Entity Component System (ECS) which is often used for games. I had some trouble implementing this architecture because there are not really concrete examples available online. In the end I managed to make it work fortunately. <br>
-For collision detection, I made a Sweep And Prune (SAP) algorithm to remove obvious non overlapping circles. After that, with the remaining circles that could potentially collide, the program does a very precise check and concludes whether it collides or not.
+* Coded the game in Java using the JavaFX framework. No game engine is used whatsoever.
+* Applied Entity Component System (ECS) architecture to keep good structure in the code.
+* Collision detection is performed in two stages. First, a sweep-and-prune (SAP) algorithm is used to quickly eliminate clearly non-overlapping objects. Then, a more computationally intensive algorithm is applied to the remaining candidates.
