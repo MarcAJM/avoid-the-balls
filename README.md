@@ -1,6 +1,6 @@
 # Avoid The Balls
 
-This is my first game ever I actually put quite some effort in. The idea is simple, try to avoid the balls for as long as possible!
+This is my first game ever I actually put quite some effort in. The idea is simple, try to avoid the balls from hitting your cursor!
 
 ![Demo](demo.gif)
 
