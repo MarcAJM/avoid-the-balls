@@ -1,10 +1,19 @@
 # Avoid The Balls
 
-This is my first game ever I actually put quite some effort in. The idea is simple, try to avoid the balls from hitting your cursor!
+Avoid The Balls is a small game built in Java using JavaFX, without the use of a game engine.
+
+The main goal of this project was to practice object-oriented programming and software architecture. The game uses an Entity Component System (ECS) to separate game logic and behavior into reusable components.
+
+I also implemented the collision detection myself, using sweep-and-prune to reduce the number of collision checks before performing more precise collision detection.
 
 ![Demo](demo.gif)
 
-## Technical Overview
-* Coded the game in Java using the JavaFX framework. No game engine is used whatsoever.
-* Applied Entity Component System (ECS) architecture to keep good structure in the code.
-* Collision detection is performed in two stages. First, a sweep-and-prune (SAP) algorithm is used to quickly eliminate clearly non-overlapping objects. Then, a more computationally intensive algorithm is applied to the remaining candidates.
+## Technologies
+- Java
+- JavaFX
+
+## Concepts used
+- Object-oriented programming
+- Entity Component System (ECS)
+- Collision detection
+- Sweep-and-prune
